@@ -1,0 +1,37 @@
+# Find Place v1
+GET https://maps.googleapis.com/maps/api/place/findplacefromtext/json
+  ?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry
+  &input=Museum%20of%20Contemporary%20Art%20Australia
+  &inputtype=textquery
+  &key=KEY
+
+###
+
+# Text Search v2
+POST https://places.googleapis.com/v1/places:searchText
+Content-Type: application/json
+X-Goog-Api-Key: KEY
+X-Goog-FieldMask: places.displayName,places.formattedAddress
+
+{
+  "textQuery" : "Spicy Vegetarian Food in Sydney, Australia"
+}
+
+###
+
+# Query Autocomplete v1
+GET https://maps.googleapis.com/maps/api/place/queryautocomplete/json
+  ?input=pizza%20near%20par
+  &key=KEY
+
+###
+
+# Find Place v2
+POST https://places.googleapis.com/v1/places:autocomplete
+Content-Type: application/json
+X-Goog-Api-Key: KEY
+
+{
+  "input" : "pizza near par",
+  "includeQueryPredictions": true
+}
