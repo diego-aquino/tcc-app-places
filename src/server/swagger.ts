@@ -23,7 +23,7 @@ export async function loadSwagger() {
       displayRequestDuration: true,
     },
     theme: {
-      title: 'App de Entregas',
+      title: 'App de Locais',
       css: [
         {
           filename: 'custom.css',
