@@ -92,7 +92,7 @@ function formatAutocompleteText(
 app.get('/places/autocomplete', async (request, reply) => {
   const { query } = autocompleteSchema.parse(request.query);
 
-  const suggestions = await api.googleMaps.autocompletePlaceSearch(query);
+  const suggestions = await api.googleMaps.autocompletePlacesSearch(query);
 
   const autocompleteSuggestions = suggestions.map(
     (suggestion): PlaceAutocompleteSuggestion => ({

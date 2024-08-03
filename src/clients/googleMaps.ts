@@ -71,7 +71,7 @@ class GoogleMapsClient {
     return places;
   }
 
-  async autocompletePlaceSearch(partialQuery: string) {
+  async autocompletePlacesSearch(partialQuery: string) {
     const response = await this.api.places.get<PlaceAutocompleteResult>(
       'queryautocomplete/json',
       {
