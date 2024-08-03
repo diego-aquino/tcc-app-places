@@ -14,8 +14,8 @@
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/search-text)
 
-<details open>
-<summary>Exemplo:</summary>
+<details>
+<summary><b>Exemplo de requisição</b> (clique para expandir)</summary>
 
 - Requisição:
 
@@ -166,8 +166,8 @@
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/text-search)
 - [Migrando do Text Search](https://developers.google.com/maps/documentation/places/web-service/migrate-text)
 
-<details open>
-<summary>Exemplo:</summary>
+<details>
+<summary><b>Exemplo de requisição</b> (clique para expandir)</summary>
 
 - Requisição:
 
@@ -226,8 +226,8 @@
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/query)
 
-<details open>
-<summary>Exemplo:</summary>
+<details>
+<summary><b>Exemplo de requisição</b> (clique para expandir)</summary>
 
 - Requisição:
 
@@ -314,8 +314,8 @@
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete)
 - [Migrando do Query Autocomplete](https://developers.google.com/maps/documentation/places/web-service/migrate-autocomplete)
 
-<details open>
-<summary>Exemplo:</summary>
+<details>
+<summary><b>Exemplo de requisição</b> (clique para expandir)</summary>
 
 - Requisição:
 
