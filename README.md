@@ -1,14 +1,17 @@
 # tcc-app-restaurants
 
-## Places API
+## Google Maps - Places API
 
 - OpenAPI:
+
   - Versão antiga:
     [`openapi.yaml`](https://raw.githubusercontent.com/googlemaps/openapi-specification/main/dist/google-maps-platform-openapi3.yml)
     ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/googlemaps/openapi-specification/main/dist/google-maps-platform-openapi3.yml))
   - Versão nova:
     [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/1f584f091df2274239b64e91e23019f5d0b26414/google-maps-places-api-new.openapi.yaml)
     ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/1f584f091df2274239b64e91e23019f5d0b26414/google-maps-places-api-new.openapi.yaml))
+
+- [Postman](https://web.postman.co/workspace/Google-Maps---Places-API~21e9efb3-9b97-4aff-8d9a-441875ecab88)
 
 ### Text Search
 
