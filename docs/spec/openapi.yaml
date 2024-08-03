@@ -1,10 +1,10 @@
 openapi: 3.1.0
 
 info:
-  title: App de Restaurantes
+  title: App de Locais
   version: 1.0.0
 tags:
-  - name: Restaurantes
+  - name: Locais
 
 paths:
   /restaurants:
@@ -12,7 +12,7 @@ paths:
       summary: Buscar restaurantes
       operationId: restaurants/search
       tags:
-        - Restaurantes
+        - Locais
       parameters:
         - name: query
           description: O local para buscar restaurantes
@@ -30,6 +30,42 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Restaurant'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+  /autocomplete:
+    get:
+      summary: Autocompletar texto de busca
+      operationId: autocomplete
+      tags:
+        - Locais
+      parameters:
+        - name: query
+          description: O texto de busca parcial
+          schema:
+            type: string
+          in: query
+          required: true
+          example: pizza em l
+      responses:
+        '200':
+          description: Sugestões de textos de busca completos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutocompleteSuggestion'
         '400':
           description: Erro de validação
           content:
@@ -83,6 +119,23 @@ components:
               description: O endereço formatado do restaurante
               example:
                 Tea Building, 56 Shoreditch High St, London E1 6JJ, Reino Unido
+
+    AutocompleteSuggestion:
+      type: object
+      required:
+        - text
+        - formattedText
+      properties:
+        text:
+          type: string
+          description: O texto de busca completo
+          example: pizza em Londres, Reino Unido
+        formattedText:
+          type: string
+          description:
+            O texto de busca formatado, cujas correspondências estarão em
+            negrito entre '**'
+          example: '**pizza** em **L**ondres, Reino Unido'
 
     ValidationError:
       type: object

@@ -11,7 +11,7 @@ import {
 
 import app from '../src/server/app';
 
-describe('Places: Restaurants', () => {
+describe('Places: Autocomplete', () => {
   beforeAll(async () => {
     await app.ready();
   });
@@ -26,9 +26,9 @@ describe('Places: Restaurants', () => {
 
   test.skip('exemplo', async () => {
     const response = await supertest(app.server)
-      .get('/places/restaurants')
+      .get('/places/autocomplete')
       .query({
-        query: 'Campina Grande, PB',
+        query: 'pizza em l',
       });
 
     expect(response.status).toBe(200);

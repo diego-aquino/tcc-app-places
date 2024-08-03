@@ -1,7 +1,9 @@
 import fastify from 'fastify';
 import { z } from 'zod';
 
-import GoogleMapsClient from '../clients/googleMaps';
+import GoogleMapsClient, {
+  PlaceAutocompleteMatch,
+} from '../clients/googleMaps';
 import { handleServerError } from './errors';
 
 const app = fastify({
@@ -30,7 +32,7 @@ const searchRestaurantsSchema = z.object({
   query: z.string().min(1),
 });
 
-app.get('/restaurants', async (request, reply) => {
+app.get('/places/restaurants', async (request, reply) => {
   const { query } = searchRestaurantsSchema.parse(request.query);
 
   const places = await api.googleMaps.searchRestaurants(query);
@@ -57,6 +59,52 @@ app.get('/restaurants', async (request, reply) => {
     });
 
   return reply.status(200).send(restaurants);
+});
+
+interface PlaceAutocompleteSuggestion {
+  text: string;
+  formattedText: string;
+}
+
+const autocompleteSchema = z.object({
+  query: z.string().min(1),
+});
+
+function formatAutocompleteText(
+  text: string,
+  matches: PlaceAutocompleteMatch[],
+) {
+  const textAsArray = text.split('');
+
+  for (const match of matches) {
+    const startIndex = match.offset;
+    const matchStartCharacter = textAsArray[startIndex];
+    textAsArray[match.offset] = `**${matchStartCharacter}`;
+
+    const endIndex = startIndex + match.length - 1;
+    const matchEndCharacter = textAsArray[endIndex];
+    textAsArray[endIndex] = `${matchEndCharacter}**`;
+  }
+
+  return textAsArray.join('');
+}
+
+app.get('/places/autocomplete', async (request, reply) => {
+  const { query } = autocompleteSchema.parse(request.query);
+
+  const suggestions = await api.googleMaps.autocompletePlaceSearch(query);
+
+  const autocompleteSuggestions = suggestions.map(
+    (suggestion): PlaceAutocompleteSuggestion => ({
+      text: suggestion.description,
+      formattedText: formatAutocompleteText(
+        suggestion.description,
+        suggestion.matched_substrings,
+      ),
+    }),
+  );
+
+  return reply.status(200).send(autocompleteSuggestions);
 });
 
 app.setErrorHandler(handleServerError);
