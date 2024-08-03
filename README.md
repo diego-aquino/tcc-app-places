@@ -1,4 +1,4 @@
-# tcc-app-places
+# tcc-app-restaurants
 
 Places API:
 https://raw.githubusercontent.com/googlemaps/openapi-specification/main/dist/google-maps-platform-openapi3.yml
