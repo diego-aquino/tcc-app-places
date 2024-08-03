@@ -1,0 +1,37 @@
+@API_KEY = KEY
+
+### Find Place v1
+GET https://maps.googleapis.com/maps/api/place/textsearch/json
+  ?query=restaurantes%20em%20Londres
+  &type=restaurant
+  &language=pt-BR
+  &key={{API_KEY}}
+
+### Text Search v2
+POST https://places.googleapis.com/v1/places:searchText
+Content-Type: application/json
+X-Goog-Api-Key: {{API_KEY}}
+X-Goog-FieldMask: places.displayName,places.formattedAddress,places.location,places.rating
+
+{
+  "textQuery" : "restaurantes em Paris",
+  "includedType": "restaurant",
+  "languageCode": "pt-BR"
+}
+
+### Query Autocomplete v1
+GET https://maps.googleapis.com/maps/api/place/queryautocomplete/json
+  ?input=pizza%20near%20par
+  &language=pt-BR
+  &key={{API_KEY}}
+
+### Find Place v2
+POST https://places.googleapis.com/v1/places:autocomplete
+Content-Type: application/json
+X-Goog-Api-Key: {{API_KEY}}
+
+{
+  "input" : "pizza near par",
+  "includeQueryPredictions": true,
+  "languageCode": "pt-BR"
+}
