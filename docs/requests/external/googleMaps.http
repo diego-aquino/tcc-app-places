@@ -1,6 +1,6 @@
 ### Find Place - Places API
 GET https://maps.googleapis.com/maps/api/place/textsearch/json
-  ?query=restaurantes em Londres
+  ?query=restaurantes em Lisboa
   &type=restaurant
   &language=pt-BR
   &key={{$dotenv GOOGLE_MAPS_API_KEY}}
@@ -8,18 +8,18 @@ GET https://maps.googleapis.com/maps/api/place/textsearch/json
 ### Text Search - Places API (New)
 POST https://places.googleapis.com/v1/places:searchText
 Content-Type: application/json
-X-Goog-Api-Key: {{$dotenv GOOGLE_MAPS_API_KEY}}
 X-Goog-FieldMask: places.displayName,places.formattedAddress,places.location,places.rating
+X-Goog-Api-Key: {{$dotenv GOOGLE_MAPS_API_KEY}}
 
 {
-  "textQuery" : "restaurantes em Londres",
+  "textQuery" : "restaurantes em Lisboa",
   "includedType": "restaurant",
   "languageCode": "pt-BR"
 }
 
 ### Query Autocomplete - Places API
 GET https://maps.googleapis.com/maps/api/place/queryautocomplete/json
-  ?input=pizza em lond
+  ?input=pizza em lis
   &language=pt-BR
   &key={{$dotenv GOOGLE_MAPS_API_KEY}}
 
@@ -29,7 +29,7 @@ Content-Type: application/json
 X-Goog-Api-Key: {{$dotenv GOOGLE_MAPS_API_KEY}}
 
 {
-  "input" : "pizza em lond",
+  "input" : "pizza em lis",
   "includeQueryPredictions": true,
   "languageCode": "pt-BR"
 }

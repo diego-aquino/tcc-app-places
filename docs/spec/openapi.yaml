@@ -20,7 +20,7 @@ paths:
             type: string
           in: query
           required: true
-          example: Londres, Reino Unido
+          example: Lisboa, Portugal
       responses:
         '200':
           description: Restaurantes encontrados
@@ -129,7 +129,7 @@ components:
         text:
           type: string
           description: O texto de busca completo
-          example: pizza em Londres, Reino Unido
+          example: pizza em Lisboa, Portugal
         formattedText:
           type: string
           description:
