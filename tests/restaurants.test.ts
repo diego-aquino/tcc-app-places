@@ -11,7 +11,7 @@ import {
 
 import app from '../src/server/app';
 
-describe('Example', () => {
+describe('Restaurants', () => {
   beforeAll(async () => {
     await app.ready();
   });
@@ -24,17 +24,20 @@ describe('Example', () => {
     await app.close();
   });
 
-  // Exemplo (para habilitar, remova o `.skip`)
-  test.skip('example', async () => {
-    const response = await supertest(app.server).get('/');
+  test.skip('exemplo', async () => {
+    const response = await supertest(app.server).get('/restaurants').query({
+      query: 'Campina Grande, PB',
+    });
+
     expect(response.status).toBe(200);
+    console.log(response.body);
   });
 
-  test('case 1', async () => {
+  test('caso 1: <descrição curta do teste>', async () => {
     // Implemente aqui...
   });
 
-  test('case 2', async () => {
+  test('caso 2: <descrição curta do teste>', async () => {
     // Implemente aqui...
   });
 });
