@@ -46,13 +46,6 @@ class GoogleMapsClient {
     };
   }
 
-  async searchRestaurants(locationQuery: string) {
-    const places = await this.searchPlaces(`restaurantes em ${locationQuery}`, {
-      type: 'restaurant',
-    });
-    return places;
-  }
-
   async searchPlaces(query: string, options: { type: string }) {
     const response = await this.api.places.get<PlaceTextSearchResult>(
       '/textsearch/json',
@@ -61,7 +54,6 @@ class GoogleMapsClient {
           query,
           language: 'pt-BR',
           type: options.type,
-          fields: 'name,formatted_address,rating',
           key: process.env.GOOGLE_MAPS_API_KEY,
         },
       },

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import GoogleMapsClient, {
   PlaceAutocompleteMatch,
-} from '../clients/googleMaps';
+} from '../clients/GoogleMapsClient';
 import { handleServerError } from './errors';
 
 const app = fastify({
@@ -35,7 +35,11 @@ const searchRestaurantsSchema = z.object({
 app.get('/places/restaurants', async (request, reply) => {
   const { query } = searchRestaurantsSchema.parse(request.query);
 
-  const places = await api.googleMaps.searchRestaurants(query);
+  const fullQuery = `restaurantes em ${query}`;
+
+  const places = await api.googleMaps.searchPlaces(fullQuery, {
+    type: 'restaurant',
+  });
 
   const restaurants = places
     .map((place) => {
@@ -70,6 +74,15 @@ const autocompleteSchema = z.object({
   query: z.string().min(1),
 });
 
+/**
+ * Esta função formata um texto acrescentando '**' em volta das correspondências.
+ *
+ * @example
+ *  formatAutocompleteText(
+ *    'Museu de Arte',
+ *    [{ offset: 0, length: 3 }, { offset: 9, length: 1 }]
+ *  ); // '**Muse**u de **A**rte'
+ */
 function formatAutocompleteText(
   text: string,
   matches: PlaceAutocompleteMatch[],

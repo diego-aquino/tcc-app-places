@@ -7,7 +7,7 @@ tags:
   - name: Locais
 
 paths:
-  /restaurants:
+  /places/restaurants:
     get:
       summary: Buscar restaurantes
       operationId: restaurants/search
@@ -43,7 +43,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
 
-  /autocomplete:
+  /places/autocomplete:
     get:
       summary: Autocompletar texto de busca
       operationId: autocomplete
