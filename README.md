@@ -15,7 +15,7 @@
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/search-text)
 
 O script [`examples/text-search-current.sh`](./examples/text-search-current.sh)
-demonstra uma requisição de exemplo com cURL, salvando a resposta em
+faz uma requisição de exemplo e salva a resposta em
 [`example-text-search-current.json`](./example-text-search-current.json).
 
 ```bash
@@ -27,8 +27,8 @@ bash examples/text-search-current.sh
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/text-search)
 - [Migrando do Text Search](https://developers.google.com/maps/documentation/places/web-service/migrate-text)
 
-O script [`examples/text-search-new.sh`](./examples/text-search-new.sh)
-demonstra uma requisição de exemplo com cURL, salvando a resposta em
+O script [`examples/text-search-new.sh`](./examples/text-search-new.sh) faz uma
+requisição de exemplo e salva a resposta em
 [`example-text-search-new.json`](./example-text-search-new.json).
 
 ```bash
@@ -40,8 +40,8 @@ bash examples/text-search-new.sh
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/query)
 
 O script
-[`examples/autocomplete-current.sh`](./examples/autocomplete-current.sh)
-demonstra uma requisição de exemplo com cURL, salvando a resposta em
+[`examples/autocomplete-current.sh`](./examples/autocomplete-current.sh) faz uma
+requisição de exemplo e salva a resposta em
 [`example-autocomplete-current.json`](./example-autocomplete-current.json).
 
 ```bash
@@ -53,10 +53,14 @@ bash examples/autocomplete-current.sh
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete)
 - [Migrando do Query Autocomplete](https://developers.google.com/maps/documentation/places/web-service/migrate-autocomplete)
 
-O script [`examples/autocomplete-new.sh`](./examples/autocomplete-new.sh)
-demonstra uma requisição de exemplo com cURL, salvando a resposta em
+O script [`examples/autocomplete-new.sh`](./examples/autocomplete-new.sh) faz
+uma requisição de exemplo e salva a resposta em
 [`example-autocomplete-new.json`](./example-autocomplete-new.json).
 
 ```bash
 bash examples/autocomplete-new.sh
 ```
+
+## Entrega
+
+https://forms.gle/5xsCyTAAFMe3Q1bWA
