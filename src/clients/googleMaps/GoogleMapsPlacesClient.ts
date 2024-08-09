@@ -33,7 +33,7 @@ export interface PlaceAutocompleteResult {
   predictions: PlaceAutocompletePrediction[];
 }
 
-class GoogleMapsClient {
+class GoogleMapsPlacesClient {
   private api: {
     places: AxiosInstance;
   };
@@ -46,7 +46,7 @@ class GoogleMapsClient {
     };
   }
 
-  async searchPlaces(query: string, options: { type: string }) {
+  async searchByText(query: string, options: { type: string }) {
     const response = await this.api.places.get<PlaceTextSearchResult>(
       '/textsearch/json',
       {
@@ -63,7 +63,7 @@ class GoogleMapsClient {
     return places;
   }
 
-  async autocompletePlacesSearch(partialQuery: string) {
+  async autocomplete(partialQuery: string) {
     const response = await this.api.places.get<PlaceAutocompleteResult>(
       'queryautocomplete/json',
       {
@@ -80,4 +80,4 @@ class GoogleMapsClient {
   }
 }
 
-export default GoogleMapsClient;
+export default GoogleMapsPlacesClient;

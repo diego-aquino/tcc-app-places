@@ -1,10 +1,10 @@
 import fastify from 'fastify';
 import { z } from 'zod';
 
-import GoogleMapsClient, {
-  PlaceAutocompleteMatch,
-} from '../clients/GoogleMapsClient';
 import { handleServerError } from './errors';
+import GoogleMapsPlacesClient, {
+  PlaceAutocompleteMatch,
+} from '../clients/googleMaps/GoogleMapsPlacesClient';
 
 const app = fastify({
   logger: true,
@@ -12,7 +12,9 @@ const app = fastify({
 });
 
 const api = {
-  googleMaps: new GoogleMapsClient(),
+  googleMaps: {
+    places: new GoogleMapsPlacesClient(),
+  },
 };
 
 interface RestaurantAddress {
@@ -37,7 +39,7 @@ app.get('/places/restaurants', async (request, reply) => {
 
   const fullQuery = `restaurantes em ${query}`;
 
-  const places = await api.googleMaps.searchPlaces(fullQuery, {
+  const places = await api.googleMaps.places.searchByText(fullQuery, {
     type: 'restaurant',
   });
 
@@ -105,7 +107,7 @@ function formatAutocompleteText(
 app.get('/places/autocomplete', async (request, reply) => {
   const { query } = autocompleteSchema.parse(request.query);
 
-  const suggestions = await api.googleMaps.autocompletePlacesSearch(query);
+  const suggestions = await api.googleMaps.places.autocomplete(query);
 
   const autocompleteSuggestions = suggestions.map(
     (suggestion): PlaceAutocompleteSuggestion => ({
