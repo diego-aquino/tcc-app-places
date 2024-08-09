@@ -11,7 +11,7 @@ import {
 
 import app from '../src/server/app';
 
-describe('Places: Autocomplete', () => {
+describe('Autocomplete', () => {
   beforeAll(async () => {
     await app.ready();
   });

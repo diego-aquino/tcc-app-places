@@ -1,4 +1,4 @@
-# Busca de Restaurantes - Aplicando Mocks de API
+# Autocomplete de Locais - Aplicando Mocks de API
 
 Esta aplicação permite autocompletar textos de busca de locais, fornecendo
 sugestões com a
@@ -6,7 +6,7 @@ sugestões com a
 
 ## 1. Acesso
 
-[![Abrir no Stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/diego-aquino/api-mocking-app-restaurants?startScript=dev&file=README.md)
+[![Abrir no Stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/diego-aquino/api-mocking-app-autocomplete?startScript=dev&file=README.md)
 
 ## 2. Projeto
 
@@ -17,7 +17,7 @@ Arquivos importantes:
 - [`src/clients/GoogleMapsPlacesClient.ts`](./src/clients/googleMaps/GoogleMapsPlacesClient.ts):
   classe que faz as chamadas HTTP para a Places API.
 - [`tests/autocomplete.test.ts`](./tests/autocomplete.test.ts): arquivo para os
-  testes da busca de restaurantes.
+  testes do autocomplete de locais.
 
 Comandos úteis:
 

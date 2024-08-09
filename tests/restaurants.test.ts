@@ -11,7 +11,7 @@ import {
 
 import app from '../src/server/app';
 
-describe('Places: Restaurants', () => {
+describe('Restaurants', () => {
   beforeAll(async () => {
     await app.ready();
   });
