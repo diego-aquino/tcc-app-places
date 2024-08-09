@@ -12,6 +12,6 @@ curl --request POST \
     "includedType": "restaurant",
     "languageCode": "pt-BR"
   }' \
-  --fail --silent | jq . >"$outputFile"
+  --fail | jq . >"$outputFile"
 
 echo "JSON response saved to ./$outputFile"

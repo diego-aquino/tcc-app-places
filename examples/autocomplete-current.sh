@@ -5,6 +5,6 @@ outputFile='example-autocomplete-current.json'
 
 curl --request GET \
   "$baseURL/queryautocomplete/json?input=pizza+em+lis&language=pt-BR" \
-  --fail --silent | jq . >"$outputFile"
+  --fail | jq . >"$outputFile"
 
 echo "JSON response saved to ./$outputFile"

@@ -11,6 +11,6 @@ curl --request POST \
     "includeQueryPredictions": true,
     "languageCode": "pt-BR"
   }' \
-  --fail --silent | jq . >"$outputFile"
+  --fail | jq . >"$outputFile"
 
 echo "JSON response saved to ./$outputFile"
