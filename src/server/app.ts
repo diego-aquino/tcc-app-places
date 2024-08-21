@@ -7,8 +7,8 @@ import GoogleMapsPlacesClient, {
 } from '../clients/googleMaps/GoogleMapsPlacesClient';
 
 const app = fastify({
-  logger: true,
-  disableRequestLogging: process.env.NODE_ENV === 'test',
+  logger: process.env.NODE_ENV !== 'test',
+  disableRequestLogging: process.env.NODE_ENV !== 'development',
 });
 
 const api = {
