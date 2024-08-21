@@ -5,6 +5,7 @@
     "dev": "dotenv -c development -- tsx watch --clear-screen=false src/index.ts",
     "test": "dotenv -c test -- dotenv -c development -- vitest",
     "example": "tsx examples/index.ts",
+    "typegen": "dotenv -c development -- bash -c 'zimic typegen openapi $GOOGLE_MAPS_PLACES_OPENAPI_URL -o src/clients/googleMaps/types.generated.ts -s GooglePlaces'",
     "types:check": "tsc --noEmit"
   },
   "dependencies": {
