@@ -35,7 +35,11 @@ describe('Restaurants', () => {
     console.log(response.body);
   });
 
-  test('caso 1: <descrição curta do teste>', async () => {
+  test('caso 1: sucesso (2XX)', async () => {
+    // Implemente aqui...
+  });
+
+  test('caso 2: erro (4XX ou 5XX)', async () => {
     // Implemente aqui...
   });
 });
