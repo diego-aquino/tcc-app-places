@@ -17,7 +17,7 @@ const api = {
   },
 };
 
-export interface RestaurantAddress {
+export interface RestaurantLocation {
   latitude?: number;
   longitude?: number;
   formattedAddress?: string;
@@ -27,7 +27,7 @@ export interface Restaurant {
   id: string;
   name?: string;
   rating?: number;
-  location: RestaurantAddress;
+  location: RestaurantLocation;
 }
 
 const searchRestaurantsSchema = z.object({
@@ -43,26 +43,26 @@ app.get('/places/restaurants', async (request, reply) => {
     type: 'restaurant',
   });
 
-  const restaurants = places
-    .map((place) => {
-      const restaurant: Restaurant = {
-        id: place.place_id,
-        name: place.name,
-        rating: place.rating,
-        location: {
-          latitude: place.geometry?.location.lat,
-          longitude: place.geometry?.location.lng,
-          formattedAddress: place.formatted_address,
-        },
-      };
+  const restaurants = places.map((place): Restaurant => {
+    const location: RestaurantLocation = {
+      latitude: place.geometry?.location.lat,
+      longitude: place.geometry?.location.lng,
+      formattedAddress: place.formatted_address,
+    };
 
-      return restaurant;
-    })
-    .sort((restaurant, otherRestaurant) => {
-      const rating = restaurant.rating ?? 0;
-      const otherRating = otherRestaurant.rating ?? 0;
-      return otherRating - rating;
-    });
+    return {
+      id: place.place_id,
+      name: place.name,
+      rating: place.rating,
+      location,
+    };
+  });
+
+  restaurants.sort((restaurant, otherRestaurant) => {
+    const rating = restaurant.rating ?? 0;
+    const otherRating = otherRestaurant.rating ?? 0;
+    return otherRating - rating;
+  });
 
   return reply.status(200).send(restaurants);
 });
@@ -107,19 +107,23 @@ function formatAutocompleteText(
 app.get('/places/autocomplete', async (request, reply) => {
   const { query } = autocompleteSchema.parse(request.query);
 
-  const suggestions = await api.googleMaps.places.autocomplete(query);
+  const rawSuggestions = await api.googleMaps.places.autocomplete(query);
 
-  const autocompleteSuggestions = suggestions.map(
-    (suggestion): PlaceAutocompleteSuggestion => ({
-      text: suggestion.description,
-      formattedText: formatAutocompleteText(
+  const suggestions = rawSuggestions.map(
+    (suggestion): PlaceAutocompleteSuggestion => {
+      const formattedText = formatAutocompleteText(
         suggestion.description,
         suggestion.matched_substrings,
-      ),
-    }),
+      );
+
+      return {
+        text: suggestion.description,
+        formattedText,
+      };
+    },
   );
 
-  return reply.status(200).send(autocompleteSuggestions);
+  return reply.status(200).send(suggestions);
 });
 
 app.setErrorHandler(handleServerError);

@@ -1,20 +1,25 @@
 import axios, { AxiosInstance } from 'axios';
 import { createAxiosErrorFromResponse } from '../../utils/axios';
 
+export interface PlaceLocation {
+  lat: number;
+  lng: number;
+}
+
 export interface PlaceGeometry {
-  location: { lat: number; lng: number };
+  location: PlaceLocation;
   viewport: {
-    northeast: { lat: number; lng: number };
-    southwest: { lat: number; lng: number };
+    northeast: PlaceLocation;
+    southwest: PlaceLocation;
   };
 }
 
 export interface Place {
   place_id: string;
   name?: string;
-  formatted_address?: string;
-  geometry?: PlaceGeometry;
   rating?: number;
+  geometry?: PlaceGeometry;
+  formatted_address?: string;
 }
 
 type PlaceSearchStatus =
