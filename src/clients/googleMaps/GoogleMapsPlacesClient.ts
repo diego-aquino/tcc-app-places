@@ -1,9 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
+import { createAxiosErrorFromResponse } from '../../utils/axios';
 
 export interface PlaceGeometry {
-  location: {
-    lat: number;
-    lng: number;
+  location: { lat: number; lng: number };
+  viewport: {
+    northeast: { lat: number; lng: number };
+    southwest: { lat: number; lng: number };
   };
 }
 
@@ -15,7 +17,17 @@ export interface Place {
   rating?: number;
 }
 
+type PlaceSearchStatus =
+  | 'OK'
+  | 'ZERO_RESULTS'
+  | 'INVALID_REQUEST'
+  | 'OVER_QUERY_LIMIT'
+  | 'REQUEST_DENIED'
+  | 'UNKNOWN_ERROR';
+
 export interface PlaceTextSearchResult {
+  status: PlaceSearchStatus;
+  html_attributions: string[];
   results: Place[];
 }
 
@@ -30,6 +42,8 @@ export interface PlaceAutocompletePrediction {
 }
 
 export interface PlaceAutocompleteResult {
+  status: PlaceSearchStatus;
+  html_attributions: string[];
   predictions: PlaceAutocompletePrediction[];
 }
 
@@ -59,6 +73,10 @@ class GoogleMapsPlacesClient {
       },
     );
 
+    if (!this.isSuccessSearchStatus(response.data.status)) {
+      throw createAxiosErrorFromResponse(response);
+    }
+
     const places = response.data.results;
     return places;
   }
@@ -75,8 +93,16 @@ class GoogleMapsPlacesClient {
       },
     );
 
+    if (!this.isSuccessSearchStatus(response.data.status)) {
+      throw createAxiosErrorFromResponse(response);
+    }
+
     const predictions = response.data.predictions;
     return predictions;
+  }
+
+  private isSuccessSearchStatus(status: PlaceSearchStatus) {
+    return status === 'OK' || status === 'ZERO_RESULTS';
   }
 }
 

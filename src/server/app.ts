@@ -17,13 +17,13 @@ const api = {
   },
 };
 
-interface RestaurantAddress {
+export interface RestaurantAddress {
   latitude?: number;
   longitude?: number;
   formattedAddress?: string;
 }
 
-interface Restaurant {
+export interface Restaurant {
   id: string;
   name?: string;
   rating?: number;
