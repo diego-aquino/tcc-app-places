@@ -11,14 +11,24 @@ import {
 import { setupServer } from 'msw/node';
 import { http } from 'msw';
 
-import app, { Restaurant } from '../src/server/app';
-import { Place } from '../src/clients/googleMaps/GoogleMapsPlacesClient';
+import app, { Restaurant, RestaurantLocation } from '../src/server/app';
+import {
+  Place,
+  PlaceTextSearchResult,
+} from '../src/clients/googleMaps/GoogleMapsPlacesClient';
 
 const GOOGLE_MAPS_PLACES_API_URL = process.env.GOOGLE_MAPS_PLACES_API_URL;
 
 const interceptorServer = setupServer(
   http.get(`${GOOGLE_MAPS_PLACES_API_URL}/textsearch/json`, () => {
-    return Response.json({ results: [] }, { status: 200 });
+    return Response.json(
+      {
+        status: 'ZERO_RESULTS',
+        html_attributions: [],
+        results: [],
+      } satisfies PlaceTextSearchResult,
+      { status: 200 },
+    );
   }),
 );
 
@@ -28,7 +38,7 @@ describe('Restaurants', () => {
       {
         place_id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
         name: 'Brasserie Zédel',
-        formatted_address: '20 Sherwood St, London W1F 7ED, Reino Unido',
+        rating: 4.5,
         geometry: {
           location: { lat: 51.5105561, lng: -0.1355974 },
           viewport: {
@@ -36,12 +46,12 @@ describe('Restaurants', () => {
             southwest: { lat: 51.50929717010727, lng: -0.1369083298927222 },
           },
         },
-        rating: 4.5,
+        formatted_address: '20 Sherwood St, London W1F 7ED, Reino Unido',
       },
       {
         place_id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
         name: 'Sabor',
-        formatted_address: '35-37 Heddon St, London W1B 4BR, Reino Unido',
+        rating: 4.6,
         geometry: {
           location: { lat: 51.5113964, lng: -0.1396951 },
           viewport: {
@@ -49,7 +59,7 @@ describe('Restaurants', () => {
             southwest: { lat: 51.51006417010728, lng: -0.1408327798927222 },
           },
         },
-        rating: 4.6,
+        formatted_address: '35-37 Heddon St, London W1B 4BR, Reino Unido',
       },
     ],
   } satisfies Record<string, Place[]>;
@@ -90,20 +100,27 @@ describe('Restaurants', () => {
       http.get(
         `${GOOGLE_MAPS_PLACES_API_URL}/textsearch/json`,
         ({ request }) => {
-          const { searchParams } = new URL(request.url);
+          const url = new URL(request.url);
 
-          if (searchParams.get('query') === 'restaurantes em Londres') {
+          if (url.searchParams.get('query') === 'restaurantes em Londres') {
             return Response.json(
               {
                 status: 'OK',
                 html_attributions: [],
                 results: restaurantPlaces.london,
-              },
+              } satisfies PlaceTextSearchResult,
               { status: 200 },
             );
           }
 
-          return Response.json({ results: [] }, { status: 200 });
+          return Response.json(
+            {
+              status: 'ZERO_RESULTS',
+              html_attributions: [],
+              results: [],
+            } satisfies PlaceTextSearchResult,
+            { status: 200 },
+          );
         },
       ),
     );
@@ -116,30 +133,30 @@ describe('Restaurants', () => {
 
     expect(response.status).toBe(200);
 
+    const expectedRestaurantPlaces = [
+      restaurantPlaces.london[1],
+      restaurantPlaces.london[0],
+    ];
+
     const restaurants = response.body as Restaurant[];
-    expect(restaurants).toHaveLength(2);
+    expect(restaurants).toHaveLength(expectedRestaurantPlaces.length);
 
-    expect(restaurants[0]).toEqual<Restaurant>({
-      id: restaurantPlaces.london[1].place_id,
-      name: restaurantPlaces.london[1].name,
-      rating: restaurantPlaces.london[1].rating,
-      location: {
-        latitude: restaurantPlaces.london[1].geometry?.location.lat,
-        longitude: restaurantPlaces.london[1].geometry?.location.lng,
-        formattedAddress: restaurantPlaces.london[1].formatted_address,
-      },
-    });
+    for (const [index, restaurantPlace] of expectedRestaurantPlaces.entries()) {
+      const restaurant = restaurants[index];
 
-    expect(restaurants[1]).toEqual<Restaurant>({
-      id: restaurantPlaces.london[0].place_id,
-      name: restaurantPlaces.london[0].name,
-      rating: restaurantPlaces.london[0].rating,
-      location: {
-        latitude: restaurantPlaces.london[0].geometry?.location.lat,
-        longitude: restaurantPlaces.london[0].geometry?.location.lng,
-        formattedAddress: restaurantPlaces.london[0].formatted_address,
-      },
-    });
+      const location: RestaurantLocation = {
+        latitude: restaurantPlace.geometry?.location.lat,
+        longitude: restaurantPlace.geometry?.location.lng,
+        formattedAddress: restaurantPlace.formatted_address,
+      };
+
+      expect(restaurant).toEqual<Restaurant>({
+        id: restaurantPlace.place_id,
+        name: restaurantPlace.name,
+        rating: restaurantPlace.rating,
+        location,
+      });
+    }
   });
 
   test('caso 2: erro (4XX ou 5XX)', async () => {
