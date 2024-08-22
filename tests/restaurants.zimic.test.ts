@@ -12,11 +12,20 @@ import { httpInterceptor } from 'zimic/interceptor/http';
 
 import app, { Restaurant, RestaurantLocation } from '../src/server/app';
 import { Place } from '../src/clients/googleMaps/GoogleMapsPlacesClient';
-import { GooglePlacesSchema } from '../src/clients/googleMaps/types.generated';
+import {
+  GooglePlacesOperations,
+  GooglePlacesSchema,
+} from '../src/clients/googleMaps/types.generated';
 
 const GOOGLE_MAPS_PLACES_API_URL = process.env.GOOGLE_MAPS_PLACES_API_URL;
 
-httpInterceptor.default.onUnhandledRequest({ log: false });
+httpInterceptor.default.onUnhandledRequest(async (request, context) => {
+  const url = new URL(request.url);
+
+  if (url.hostname !== '127.0.0.1') {
+    await context.log();
+  }
+});
 
 const interceptor = httpInterceptor.create<GooglePlacesSchema>({
   type: 'local',
@@ -56,13 +65,30 @@ describe('Restaurants', () => {
     ],
   } satisfies Record<string, Place[]>;
 
+  const defaultTextSearchQuery = {
+    language: 'pt-BR',
+    type: 'restaurant',
+    radius: `${10000}`,
+  } satisfies Partial<
+    GooglePlacesOperations['textSearch']['request']['searchParams']
+  >;
+
   beforeAll(async () => {
     await interceptor.start();
 
     await app.ready();
   });
 
-  beforeEach(async () => {});
+  beforeEach(async () => {
+    interceptor.get('/textsearch/json').respond({
+      status: 200,
+      body: {
+        status: 'ZERO_RESULTS',
+        html_attributions: [],
+        results: [],
+      },
+    });
+  });
 
   afterEach(async () => {
     interceptor.clear();
@@ -89,7 +115,11 @@ describe('Restaurants', () => {
     const textSearchHandler = interceptor
       .get('/textsearch/json')
       .with({
-        searchParams: { query: 'restaurantes em Londres' },
+        searchParams: {
+          ...defaultTextSearchQuery,
+          query: 'restaurantes em Londres',
+        },
+        exact: true,
       })
       .respond({
         status: 200,
@@ -140,7 +170,11 @@ describe('Restaurants', () => {
     const textSearchHandler = interceptor
       .get('/textsearch/json')
       .with({
-        searchParams: { query: 'restaurantes em Londres' },
+        searchParams: {
+          ...defaultTextSearchQuery,
+          query: 'restaurantes em Londres',
+        },
+        exact: true,
       })
       .respond({
         status: 200,
