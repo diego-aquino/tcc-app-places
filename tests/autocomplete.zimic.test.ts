@@ -9,8 +9,8 @@ import {
   test,
 } from 'vitest';
 
-import app, { PlaceAutocompleteSuggestion } from '../src/server/app';
-import { PlaceAutocompletePrediction } from '../src/clients/googleMaps/GoogleMapsPlacesClient';
+import app, { AutocompleteSuggestion } from '../src/server/app';
+import { PlaceAutocompleteSuggestion } from '../src/clients/googleMaps/GoogleMapsPlacesClient';
 import { httpInterceptor } from 'zimic/interceptor/http';
 import {
   GooglePlacesOperations,
@@ -34,56 +34,46 @@ const interceptor = httpInterceptor.create<GooglePlacesSchema>({
 });
 
 describe('Autocomplete', () => {
-  const queryPredictions = {
+  const querySuggestions = {
     pizza: [
       {
-        description: 'pizza em Los Angeles, CA, EUA',
-        matched_substrings: [
-          { length: 5, offset: 0 },
-          { length: 1, offset: 9 },
-        ],
-        structured_formatting: {
-          main_text: 'pizza',
-          main_text_matched_substrings: [{ length: 5, offset: 0 }],
-          secondary_text: 'em Los Angeles, CA, EUA',
-          secondary_text_matched_substrings: [{ length: 1, offset: 3 }],
+        queryPrediction: {
+          text: {
+            text: 'pizza em Lisboa, Portugal',
+            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 12 }],
+          },
+          structuredFormat: {
+            mainText: { text: 'pizza', matches: [{ endOffset: 5 }] },
+            secondaryText: {
+              text: 'em Lisboa, Portugal',
+              matches: [{ startOffset: 3, endOffset: 6 }],
+            },
+          },
         },
-        terms: [
-          { offset: 0, value: 'pizza' },
-          { offset: 6, value: 'em' },
-          { offset: 9, value: 'Los Angeles' },
-          { offset: 22, value: 'CA' },
-          { offset: 26, value: 'EUA' },
-        ],
       },
       {
-        description: 'pizza em Las Vegas, NV, EUA',
-        matched_substrings: [
-          { length: 5, offset: 0 },
-          { length: 1, offset: 9 },
-        ],
-        structured_formatting: {
-          main_text: 'pizza',
-          main_text_matched_substrings: [{ length: 5, offset: 0 }],
-          secondary_text: 'em Las Vegas, NV, EUA',
-          secondary_text_matched_substrings: [{ length: 1, offset: 3 }],
+        queryPrediction: {
+          text: {
+            text: 'pizza em Lisle, Illinois, EUA',
+            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 12 }],
+          },
+          structuredFormat: {
+            mainText: { text: 'pizza', matches: [{ endOffset: 5 }] },
+            secondaryText: {
+              text: 'em Lisle, Illinois, EUA',
+              matches: [{ startOffset: 3, endOffset: 6 }],
+            },
+          },
         },
-        terms: [
-          { offset: 0, value: 'pizza' },
-          { offset: 6, value: 'em' },
-          { offset: 9, value: 'Las Vegas' },
-          { offset: 20, value: 'NV' },
-          { offset: 24, value: 'EUA' },
-        ],
       },
     ],
-  } satisfies Record<string, PlaceAutocompletePrediction[]>;
+  } satisfies Record<string, PlaceAutocompleteSuggestion[]>;
 
   const defaultAutocompleteQuery = {
-    language: 'pt-BR',
-    radius: `${10000}`,
+    languageCode: 'pt-BR',
+    includeQueryPredictions: true,
   } satisfies Partial<
-    GooglePlacesOperations['autocomplete']['request']['searchParams']
+    GooglePlacesOperations['Places_AutocompletePlaces']['request']['body']
   >;
 
   beforeAll(async () => {
@@ -93,11 +83,10 @@ describe('Autocomplete', () => {
   });
 
   beforeEach(async () => {
-    interceptor.get('/queryautocomplete/json').respond({
+    interceptor.post('/places:autocomplete').respond({
       status: 200,
       body: {
-        status: 'ZERO_RESULTS',
-        predictions: [],
+        suggestions: [],
       },
     });
   });
@@ -127,9 +116,9 @@ describe('Autocomplete', () => {
     const searchQuery = 'pizza em l';
 
     const autocompleteHandler = interceptor
-      .get('/queryautocomplete/json')
+      .post('/places:autocomplete')
       .with({
-        searchParams: {
+        body: {
           ...defaultAutocompleteQuery,
           input: searchQuery,
         },
@@ -137,8 +126,7 @@ describe('Autocomplete', () => {
       .respond({
         status: 200,
         body: {
-          status: 'OK',
-          predictions: queryPredictions.pizza,
+          suggestions: querySuggestions.pizza,
         },
       });
 
@@ -150,10 +138,10 @@ describe('Autocomplete', () => {
 
     expect(response.status).toBe(200);
 
-    const predictions = response.body as PlaceAutocompletePrediction[];
-    expect(predictions).toHaveLength(queryPredictions.pizza.length);
+    const predictions = response.body as AutocompleteSuggestion[];
+    expect(predictions).toHaveLength(querySuggestions.pizza.length);
 
-    expect(predictions).toEqual<PlaceAutocompleteSuggestion[]>([
+    expect(predictions).toEqual<AutocompleteSuggestion[]>([
       {
         text: 'pizza em Los Angeles, CA, EUA',
         formattedText: '**pizza** em **L**os Angeles, CA, EUA',
@@ -169,18 +157,17 @@ describe('Autocomplete', () => {
 
   test('caso 2: erro (4XX ou 5XX)', async () => {
     const autocompleteHandler = interceptor
-      .get('/queryautocomplete/json')
+      .post('/places:autocomplete')
       .with({
-        searchParams: {
+        body: {
           ...defaultAutocompleteQuery,
           input: 'pizza em l',
         },
       })
       .respond({
-        status: 200,
+        status: 500,
         body: {
-          status: 'UNKNOWN_ERROR',
-          predictions: [],
+          message: 'Unknown error',
         },
       });
 

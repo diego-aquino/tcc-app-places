@@ -45,14 +45,14 @@ app.get('/places/restaurants', async (request, reply) => {
 
   const restaurants = places.map((place): Restaurant => {
     const location: RestaurantLocation = {
-      latitude: place.geometry?.location.lat,
-      longitude: place.geometry?.location.lng,
-      formattedAddress: place.formatted_address,
+      latitude: place.location.latitude,
+      longitude: place.location.longitude,
+      formattedAddress: place.formattedAddress,
     };
 
     return {
-      id: place.place_id,
-      name: place.name,
+      id: place.id,
+      name: place.displayName.text,
       rating: place.rating,
       location,
     };
@@ -67,7 +67,7 @@ app.get('/places/restaurants', async (request, reply) => {
   return reply.status(200).send(restaurants);
 });
 
-export interface PlaceAutocompleteSuggestion {
+export interface AutocompleteSuggestion {
   text: string;
   formattedText: string;
 }
@@ -92,8 +92,8 @@ function formatAutocompleteText(
   const textAsArray = text.split('');
 
   for (const match of matches) {
-    const startOffset = match.offset;
-    const endOffset = startOffset + match.length;
+    const startOffset = match.startOffset ?? 0;
+    const endOffset = match.endOffset;
 
     const startIndex = startOffset;
     textAsArray[startIndex] = `**${textAsArray[startIndex]}`;
@@ -111,14 +111,14 @@ app.get('/places/autocomplete', async (request, reply) => {
   const rawSuggestions = await api.googleMaps.places.autocomplete(query);
 
   const suggestions = rawSuggestions.map(
-    (suggestion): PlaceAutocompleteSuggestion => {
+    (suggestion): AutocompleteSuggestion => {
       const formattedText = formatAutocompleteText(
-        suggestion.description,
-        suggestion.matched_substrings,
+        suggestion.queryPrediction.text.text,
+        suggestion.queryPrediction.text.matches,
       );
 
       return {
-        text: suggestion.description,
+        text: suggestion.queryPrediction.text.text,
         formattedText,
       };
     },

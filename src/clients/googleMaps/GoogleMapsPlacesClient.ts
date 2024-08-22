@@ -1,67 +1,53 @@
 import axios, { AxiosInstance } from 'axios';
-import { createAxiosErrorFromResponse } from '../../utils/axios';
+import { GooglePlacesOperations, GooglePlacesSchema } from './types.generated';
+import { HttpSchemaPath } from 'zimic/http';
 
 export interface PlaceLocation {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
 
-export interface PlaceGeometry {
-  location: PlaceLocation;
-  viewport: {
-    northeast: PlaceLocation;
-    southwest: PlaceLocation;
-  };
+interface PlaceDisplayName {
+  text: string;
+  languageCode: string;
 }
 
 export interface Place {
-  place_id: string;
-  name?: string;
-  rating?: number;
-  geometry?: PlaceGeometry;
-  formatted_address?: string;
+  id: string;
+  displayName: PlaceDisplayName;
+  rating: number;
+  location: PlaceLocation;
+  formattedAddress: string;
 }
 
-type PlaceSearchStatus =
-  | 'OK'
-  | 'ZERO_RESULTS'
-  | 'INVALID_REQUEST'
-  | 'OVER_QUERY_LIMIT'
-  | 'REQUEST_DENIED'
-  | 'UNKNOWN_ERROR';
-
 export interface PlaceTextSearchResult {
-  status: PlaceSearchStatus;
-  results: Place[];
-  html_attributions: string[];
-  error_message?: string;
+  places: Place[];
 }
 
 export interface PlaceAutocompleteMatch {
-  length: number;
-  offset: number;
+  startOffset?: number;
+  endOffset: number;
 }
 
 export interface PlaceAutocompleteTerm {
-  offset: number;
-  value: string;
+  text: string;
+  matches: PlaceAutocompleteMatch[];
 }
 
 export interface PlaceAutocompletePrediction {
-  description: string;
-  matched_substrings: PlaceAutocompleteMatch[];
-  structured_formatting: {
-    main_text: string;
-    main_text_matched_substrings: PlaceAutocompleteMatch[];
-    secondary_text: string;
-    secondary_text_matched_substrings: PlaceAutocompleteMatch[];
+  text: PlaceAutocompleteTerm;
+  structuredFormat: {
+    mainText: PlaceAutocompleteTerm;
+    secondaryText: PlaceAutocompleteTerm;
   };
-  terms: PlaceAutocompleteTerm[];
+}
+
+export interface PlaceAutocompleteSuggestion {
+  queryPrediction: PlaceAutocompletePrediction;
 }
 
 export interface PlaceAutocompleteResult {
-  status: PlaceSearchStatus;
-  predictions: PlaceAutocompletePrediction[];
+  suggestions: PlaceAutocompleteSuggestion[];
 }
 
 class GoogleMapsPlacesClient {
@@ -77,49 +63,32 @@ class GoogleMapsPlacesClient {
     };
   }
 
-  async searchByText(query: string, options: { type?: string }) {
-    const response = await this.api.places.get<PlaceTextSearchResult>(
-      '/textsearch/json',
+  async searchByText(query: string, options: { type: string }) {
+    const response = await this.api.places.post<PlaceTextSearchResult>(
+      '/places:searchText' satisfies HttpSchemaPath<GooglePlacesSchema>,
       {
-        params: {
-          query,
-          type: options.type,
-          language: 'pt-BR',
-          radius: 10000,
-        },
-      },
+        textQuery: query,
+        includedType: options.type,
+        languageCode: 'pt-BR',
+      } satisfies GooglePlacesOperations['Places_SearchText']['request']['body'],
     );
 
-    if (!this.isSuccessSearchStatus(response.data.status)) {
-      throw createAxiosErrorFromResponse(response);
-    }
-
-    const { results: places } = response.data;
+    const { places } = response.data;
     return places;
   }
 
   async autocomplete(partialQuery: string) {
-    const response = await this.api.places.get<PlaceAutocompleteResult>(
-      '/queryautocomplete/json',
+    const response = await this.api.places.post<PlaceAutocompleteResult>(
+      '/places:autocomplete' satisfies HttpSchemaPath<GooglePlacesSchema>,
       {
-        params: {
-          input: partialQuery,
-          language: 'pt-BR',
-          radius: 10000,
-        },
-      },
+        input: partialQuery,
+        includeQueryPredictions: true,
+        languageCode: 'pt-BR',
+      } satisfies GooglePlacesOperations['Places_AutocompletePlaces']['request']['body'],
     );
 
-    if (!this.isSuccessSearchStatus(response.data.status)) {
-      throw createAxiosErrorFromResponse(response);
-    }
-
-    const { predictions } = response.data;
-    return predictions;
-  }
-
-  private isSuccessSearchStatus(status: PlaceSearchStatus) {
-    return status === 'OK' || status === 'ZERO_RESULTS';
+    const { suggestions } = response.data;
+    return suggestions;
   }
 }
 

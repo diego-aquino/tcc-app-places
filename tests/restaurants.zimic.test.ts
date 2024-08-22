@@ -11,8 +11,8 @@ import {
 import { httpInterceptor } from 'zimic/interceptor/http';
 
 import app, { Restaurant, RestaurantLocation } from '../src/server/app';
-import { Place } from '../src/clients/googleMaps/GoogleMapsPlacesClient';
 import {
+  GooglePlacesComponents,
   GooglePlacesOperations,
   GooglePlacesSchema,
 } from '../src/clients/googleMaps/types.generated';
@@ -37,58 +37,33 @@ describe('Restaurants', () => {
   const restaurantPlaces = {
     london: [
       {
-        formatted_address: '20 Sherwood St, London W1F 7ED, Reino Unido',
-        geometry: {
-          location: {
-            lat: 51.5105561,
-            lng: -0.1355974,
-          },
-          viewport: {
-            northeast: {
-              lat: 51.51199682989272,
-              lng: -0.1342086701072778,
-            },
-            southwest: {
-              lat: 51.50929717010727,
-              lng: -0.1369083298927222,
-            },
-          },
+        id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
+        displayName: {
+          text: 'Brasserie Zédel',
+          languageCode: 'pt',
         },
-        name: 'Brasserie Zédel',
-        place_id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
         rating: 4.5,
+        location: { latitude: 51.5105561, longitude: -0.1355974 },
+        formattedAddress: '20 Sherwood St, London W1F 7ED, Reino Unido',
       },
       {
-        formatted_address: '35-37 Heddon St, London W1B 4BR, Reino Unido',
-        geometry: {
-          location: {
-            lat: 51.5113964,
-            lng: -0.1396951,
-          },
-          viewport: {
-            northeast: {
-              lat: 51.51276382989273,
-              lng: -0.1381331201072778,
-            },
-            southwest: {
-              lat: 51.51006417010728,
-              lng: -0.1408327798927222,
-            },
-          },
+        id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
+        displayName: {
+          text: 'Sabor',
+          languageCode: 'pt',
         },
-        name: 'Sabor',
-        place_id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
         rating: 4.6,
+        location: { latitude: 51.5113964, longitude: -0.1396951 },
+        formattedAddress: '35-37 Heddon St, London W1B 4BR, Reino Unido',
       },
     ],
-  } satisfies Record<string, Place[]>;
+  } satisfies Record<string, GooglePlacesComponents['schemas']['Place'][]>;
 
-  const defaultTextSearchQuery = {
-    language: 'pt-BR',
-    type: 'restaurant',
-    radius: `${10000}`,
+  const defaultTextSearchBody = {
+    languageCode: 'pt-BR',
+    includedType: 'restaurant',
   } satisfies Partial<
-    GooglePlacesOperations['textSearch']['request']['searchParams']
+    GooglePlacesOperations['Places_SearchText']['request']['body']
   >;
 
   beforeAll(async () => {
@@ -98,12 +73,10 @@ describe('Restaurants', () => {
   });
 
   beforeEach(async () => {
-    interceptor.get('/textsearch/json').respond({
+    interceptor.post('/places:searchText').respond({
       status: 200,
       body: {
-        status: 'ZERO_RESULTS',
-        html_attributions: [],
-        results: [],
+        places: [],
       },
     });
   });
@@ -131,20 +104,18 @@ describe('Restaurants', () => {
 
   test('caso 1: sucesso (2XX)', async () => {
     const textSearchHandler = interceptor
-      .get('/textsearch/json')
+      .post('/places:searchText')
       .with({
-        searchParams: {
-          ...defaultTextSearchQuery,
-          query: 'restaurantes em Londres',
+        body: {
+          ...defaultTextSearchBody,
+          textQuery: 'restaurantes em Londres',
         },
         exact: true,
       })
       .respond({
         status: 200,
         body: {
-          status: 'OK',
-          html_attributions: [],
-          results: restaurantPlaces.london,
+          places: restaurantPlaces.london,
         },
       });
 
@@ -168,14 +139,14 @@ describe('Restaurants', () => {
       const restaurant = restaurants[index];
 
       const location: RestaurantLocation = {
-        latitude: restaurantPlace.geometry?.location.lat,
-        longitude: restaurantPlace.geometry?.location.lng,
-        formattedAddress: restaurantPlace.formatted_address,
+        latitude: restaurantPlace.location.latitude,
+        longitude: restaurantPlace.location.longitude,
+        formattedAddress: restaurantPlace.formattedAddress,
       };
 
       expect(restaurant).toEqual<Restaurant>({
-        id: restaurantPlace.place_id,
-        name: restaurantPlace.name,
+        id: restaurantPlace.id,
+        name: restaurantPlace.displayName.text,
         rating: restaurantPlace.rating,
         location,
       });
@@ -186,23 +157,17 @@ describe('Restaurants', () => {
 
   test('caso 2: erro (4XX ou 5XX)', async () => {
     const textSearchHandler = interceptor
-      .get('/textsearch/json')
+      .post('/places:searchText')
       .with({
-        searchParams: {
-          ...defaultTextSearchQuery,
-          query: 'restaurantes em Londres',
+        body: {
+          ...defaultTextSearchBody,
+          textQuery: 'restaurantes em Londres',
         },
         exact: true,
       })
       .respond({
-        status: 200,
-        body: {
-          error_message:
-            'See documentation for valid queries. https://developers.google.com/maps/documentation/places/web-service/search-text#TextSearchRequests',
-          html_attributions: [],
-          results: [],
-          status: 'INVALID_REQUEST',
-        },
+        status: 500,
+        body: { message: 'Unknown error' },
       });
 
     const response = await supertest(app.server)
