@@ -67,7 +67,7 @@ app.get('/places/restaurants', async (request, reply) => {
   return reply.status(200).send(restaurants);
 });
 
-interface PlaceAutocompleteSuggestion {
+export interface PlaceAutocompleteSuggestion {
   text: string;
   formattedText: string;
 }

@@ -4,7 +4,7 @@ baseURL='https://places-googleapis-proxy-xkh80emjtn.vercel.app/current'
 outputFile='example-autocomplete-current.json'
 
 command='curl --request GET \
-  "$baseURL/queryautocomplete/json?input=pizza+em+lis&language=pt-BR" \
+  "$baseURL/queryautocomplete/json?input=pizza+em+lis&language=pt-BR&radius=10000" \
   --fail'
 
 # ---

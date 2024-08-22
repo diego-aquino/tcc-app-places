@@ -4,7 +4,7 @@ baseURL='https://places-googleapis-proxy-xkh80emjtn.vercel.app/current'
 outputFile='example-text-search-current.json'
 
 command='curl --request GET \
-  "$baseURL/textsearch/json?query=restaurantes+em+Londres&type=restaurant&language=pt-BR" \
+  "$baseURL/textsearch/json?query=restaurantes+em+Londres&type=restaurant&language=pt-BR&radius=10000" \
   --fail'
 
 # ---

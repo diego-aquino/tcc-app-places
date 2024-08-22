@@ -41,9 +41,21 @@ export interface PlaceAutocompleteMatch {
   offset: number;
 }
 
+export interface PlaceAutocompleteTerm {
+  offset: number;
+  value: string;
+}
+
 export interface PlaceAutocompletePrediction {
   description: string;
   matched_substrings: PlaceAutocompleteMatch[];
+  structured_formatting: {
+    main_text: string;
+    main_text_matched_substrings: PlaceAutocompleteMatch[];
+    secondary_text: string;
+    secondary_text_matched_substrings: PlaceAutocompleteMatch[];
+  };
+  terms: PlaceAutocompleteTerm[];
 }
 
 export interface PlaceAutocompleteResult {
@@ -70,9 +82,9 @@ class GoogleMapsPlacesClient {
       {
         params: {
           query,
-          language: 'pt-BR',
           type: options.type,
-          key: process.env.GOOGLE_MAPS_API_KEY,
+          language: 'pt-BR',
+          radius: 10000,
         },
       },
     );
@@ -92,7 +104,7 @@ class GoogleMapsPlacesClient {
         params: {
           input: partialQuery,
           language: 'pt-BR',
-          key: process.env.GOOGLE_MAPS_API_KEY,
+          radius: 10000,
         },
       },
     );
