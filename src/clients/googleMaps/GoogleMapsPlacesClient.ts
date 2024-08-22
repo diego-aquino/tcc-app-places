@@ -48,7 +48,6 @@ export interface PlaceAutocompletePrediction {
 
 export interface PlaceAutocompleteResult {
   status: PlaceSearchStatus;
-  html_attributions: string[];
   predictions: PlaceAutocompletePrediction[];
 }
 
@@ -82,7 +81,7 @@ class GoogleMapsPlacesClient {
       throw createAxiosErrorFromResponse(response);
     }
 
-    const places = response.data.results;
+    const { results: places } = response.data;
     return places;
   }
 
@@ -102,7 +101,7 @@ class GoogleMapsPlacesClient {
       throw createAxiosErrorFromResponse(response);
     }
 
-    const predictions = response.data.predictions;
+    const { predictions } = response.data;
     return predictions;
   }
 

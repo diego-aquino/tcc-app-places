@@ -23,7 +23,7 @@ export async function loadPlugins() {
       displayRequestDuration: true,
     },
     theme: {
-      title: 'App de Locais',
+      title: 'Sistema de Locais',
       css: [
         {
           filename: 'custom.css',
