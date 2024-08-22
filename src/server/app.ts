@@ -94,7 +94,7 @@ function formatAutocompleteText(
   for (const match of matches) {
     const startIndex = match.offset;
     const matchStartCharacter = textAsArray[startIndex];
-    textAsArray[match.offset] = `**${matchStartCharacter}`;
+    textAsArray[startIndex] = `**${matchStartCharacter}`;
 
     const endIndex = startIndex + match.length - 1;
     const matchEndCharacter = textAsArray[endIndex];
