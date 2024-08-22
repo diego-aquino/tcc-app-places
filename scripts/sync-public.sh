@@ -2,13 +2,13 @@
 
 set -e
 
-# git checkout main-v1
-# git rebase main
-# git push --force
+git checkout main-v1
+git rebase main
+git push --force
 
-# git checkout main-v2
-# git rebase main-v1
-# git push --force
+git checkout main-v2
+git rebase main-v1
+git push --force
 
 git checkout main
 
@@ -22,6 +22,7 @@ for directory in ../api-mocking-app-restaurants ../api-mocking-app-autocomplete;
       --delete \
       --exclude .git \
       --exclude node_modules \
-      --exclude scripts
+      --exclude scripts \
+      --exclude docs/requests
   )
 done
