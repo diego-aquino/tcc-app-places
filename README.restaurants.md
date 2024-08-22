@@ -25,6 +25,11 @@ Comandos úteis:
 - `npm run test`: executa os **testes** da aplicação em modo watch.
 - `npm run types:check`: verifica se há **erros de tipo** no código.
 
+Ferramentas de mock:
+
+- **MSW**: https://github.com/mswjs/msw
+- **Zimic**: https://github.com/zimicjs/zimic/wiki
+
 ## 3. Places API do Google Maps
 
 - Documentação OpenAPI:

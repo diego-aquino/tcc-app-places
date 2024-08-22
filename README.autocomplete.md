@@ -26,6 +26,11 @@ Comandos úteis:
 - `npm run test`: executa os **testes** da aplicação em modo watch.
 - `npm run types:check`: verifica se há **erros de tipo** no código.
 
+Ferramentas de mock:
+
+- **MSW**: https://github.com/mswjs/msw
+- **Zimic**: https://github.com/zimicjs/zimic/wiki
+
 ## 3. Places API do Google Maps
 
 - Documentação OpenAPI:
@@ -33,8 +38,8 @@ Comandos úteis:
     [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/21b772332f2455a827166ac3b64db052/raw/b9aed7f76a91bf216cee5fb37fe2fd1e0d959c80/google-maps-places-api-current.openapi.yaml)
     ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/21b772332f2455a827166ac3b64db052/raw/b9aed7f76a91bf216cee5fb37fe2fd1e0d959c80/google-maps-places-api-current.openapi.yaml))
   - Versão nova:
-    [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/1f584f091df2274239b64e91e23019f5d0b26414/google-maps-places-api-new.openapi.yaml)
-    ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/1f584f091df2274239b64e91e23019f5d0b26414/google-maps-places-api-new.openapi.yaml))
+    [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/2e4ee77090f61a69d93f880bc0d2c3709b758daf/google-maps-places-api-new.openapi.yaml)
+    ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/2e4ee77090f61a69d93f880bc0d2c3709b758daf/google-maps-places-api-new.openapi.yaml))
 
 ### 3.1. Query Autocomplete
 
