@@ -44,10 +44,10 @@ Ferramentas de mock:
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/search-text)
 
-Exemplo de requisição com `curl`:
+Exemplo de requisição:
 
 ```bash
-bash examples/text-search-current.sh
+npm run example:current
 ```
 
 ### 3.2. Text Search (New)
@@ -55,8 +55,8 @@ bash examples/text-search-current.sh
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/text-search)
 - [Guia de migração](https://developers.google.com/maps/documentation/places/web-service/migrate-text)
 
-Exemplo de requisição com `curl`:
+Exemplo de requisição:
 
 ```bash
-bash examples/text-search-new.sh
+npm run example:new
 ```

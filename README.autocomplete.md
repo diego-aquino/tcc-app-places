@@ -45,10 +45,10 @@ Ferramentas de mock:
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/query)
 
-Exemplo de requisição com `curl`:
+Exemplo de requisição:
 
 ```bash
-bash examples/autocomplete-current.sh
+npm run example:current
 ```
 
 ### 3.2. Autocomplete (New)
@@ -56,8 +56,8 @@ bash examples/autocomplete-current.sh
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete)
 - [Guia de migração](https://developers.google.com/maps/documentation/places/web-service/migrate-autocomplete)
 
-Exemplo de requisição com `curl`:
+Exemplo de requisição:
 
 ```bash
-bash examples/autocomplete-new.sh
+npm run example:new
 ```
