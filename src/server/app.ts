@@ -83,7 +83,7 @@ const autocompleteSchema = z.object({
  *  formatAutocompleteText(
  *    'Museu de Arte',
  *    [{ offset: 0, length: 3 }, { offset: 9, length: 1 }]
- *  ); // '**Muse**u de **A**rte'
+ *  ); // '**Mus**eu de **A**rte'
  */
 function formatAutocompleteText(
   text: string,
