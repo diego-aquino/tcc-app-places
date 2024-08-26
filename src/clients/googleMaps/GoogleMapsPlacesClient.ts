@@ -32,8 +32,9 @@ type PlaceSearchStatus =
 
 export interface PlaceTextSearchResult {
   status: PlaceSearchStatus;
-  html_attributions: string[];
   results: Place[];
+  html_attributions: string[];
+  error_message?: string;
 }
 
 export interface PlaceAutocompleteMatch {
