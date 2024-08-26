@@ -34,24 +34,25 @@ describe('Restaurants', () => {
   const restaurantPlaces = {
     london: [
       {
-        id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
-        displayName: {
-          text: 'Brasserie Zédel',
-          languageCode: 'pt',
+        id: 'ChIJ3Qt2HU3LHg0RErFZs07tcZ0',
+        formattedAddress:
+          'Pavilhão Poente (ao lado do MAAT, Av. Brasília, 1300-598 Lisboa, Portugal',
+        location: {
+          latitude: 38.6963541,
+          longitude: -9.191757299999999,
         },
         rating: 4.5,
-        location: { latitude: 51.5105561, longitude: -0.1355974 },
-        formattedAddress: '20 Sherwood St, London W1F 7ED, Reino Unido',
+        displayName: { text: 'SUD Lisboa', languageCode: 'pt-PT' },
       },
       {
-        id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
-        displayName: {
-          text: 'Sabor',
-          languageCode: 'pt',
+        id: 'ChIJmUOQv5g0GQ0RQXio4tGUxDM',
+        formattedAddress: 'R. do Olival 258, 1200-744 Lisboa, Portugal',
+        location: {
+          latitude: 38.704848999999996,
+          longitude: -9.166345699999999,
         },
-        rating: 4.6,
-        location: { latitude: 51.5113964, longitude: -0.1396951 },
-        formattedAddress: '35-37 Heddon St, London W1B 4BR, Reino Unido',
+        rating: 4.8,
+        displayName: { text: 'Come Prima', languageCode: 'pt' },
       },
     ],
   } satisfies Record<string, Place[]>;
@@ -154,14 +155,23 @@ describe('Restaurants', () => {
   test('caso 2: erro (4XX ou 5XX)', async () => {
     interceptorServer.use(
       http.post(`${GOOGLE_MAPS_PLACES_API_URL}/places:searchText`, () => {
-        return Response.json({ message: 'Unknown error' }, { status: 500 });
+        return Response.json(
+          {
+            error: {
+              code: 400,
+              message: 'Empty text_query.\n',
+              status: 'INVALID_ARGUMENT',
+            },
+          },
+          { status: 400 },
+        );
       }),
     );
 
     const response = await supertest(app.server)
       .get('/places/restaurants')
       .query({
-        query: 'Londres',
+        query: '',
       });
 
     expect(response.status).toBe(500);

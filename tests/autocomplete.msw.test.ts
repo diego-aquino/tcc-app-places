@@ -36,14 +36,14 @@ describe('Autocomplete', () => {
       {
         queryPrediction: {
           text: {
-            text: 'pizza em Lisboa, Portugal',
-            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 12 }],
+            text: 'pizza em Los Angeles, CA, EUA',
+            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 10 }],
           },
           structuredFormat: {
             mainText: { text: 'pizza', matches: [{ endOffset: 5 }] },
             secondaryText: {
-              text: 'em Lisboa, Portugal',
-              matches: [{ startOffset: 3, endOffset: 6 }],
+              text: 'em Los Angeles, CA, EUA',
+              matches: [{ startOffset: 3, endOffset: 4 }],
             },
           },
         },
@@ -51,14 +51,14 @@ describe('Autocomplete', () => {
       {
         queryPrediction: {
           text: {
-            text: 'pizza em Lisle, Illinois, EUA',
-            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 12 }],
+            text: 'pizza em Las Vegas, NV, EUA',
+            matches: [{ endOffset: 5 }, { startOffset: 9, endOffset: 10 }],
           },
           structuredFormat: {
             mainText: { text: 'pizza', matches: [{ endOffset: 5 }] },
             secondaryText: {
-              text: 'em Lisle, Illinois, EUA',
-              matches: [{ startOffset: 3, endOffset: 6 }],
+              text: 'em Las Vegas, NV, EUA',
+              matches: [{ startOffset: 3, endOffset: 4 }],
             },
           },
         },
@@ -155,14 +155,23 @@ describe('Autocomplete', () => {
   test('caso 2: erro (4XX ou 5XX)', async () => {
     interceptorServer.use(
       http.post(`${GOOGLE_MAPS_PLACES_API_URL}/places:autocomplete`, () => {
-        return Response.json({ message: 'Unknown error' }, { status: 500 });
+        return Response.json(
+          {
+            error: {
+              code: 400,
+              message: 'input must be non-empty.\n',
+              status: 'INVALID_ARGUMENT',
+            },
+          },
+          { status: 400 },
+        );
       }),
     );
 
     const response = await supertest(app.server)
       .get('/places/autocomplete')
       .query({
-        query: 'pizza em l',
+        query: '',
       });
 
     expect(response.status).toBe(500);
