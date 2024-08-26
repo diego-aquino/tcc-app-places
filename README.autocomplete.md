@@ -38,8 +38,8 @@ Ferramentas de mock:
     [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/21b772332f2455a827166ac3b64db052/raw/b9aed7f76a91bf216cee5fb37fe2fd1e0d959c80/google-maps-places-api-current.openapi.yaml)
     ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/21b772332f2455a827166ac3b64db052/raw/b9aed7f76a91bf216cee5fb37fe2fd1e0d959c80/google-maps-places-api-current.openapi.yaml))
   - Versão nova:
-    [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/2e4ee77090f61a69d93f880bc0d2c3709b758daf/google-maps-places-api-new.openapi.yaml)
-    ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/2e4ee77090f61a69d93f880bc0d2c3709b758daf/google-maps-places-api-new.openapi.yaml))
+    [`openapi.yaml`](https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/b9a8cac11b2f186130ba72379d52ba142ba4a2f7/google-maps-places-api-new.openapi.yaml)
+    ([Visualizar no Swagger UI](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/diego-aquino/a0554434e8ac73ece2f5d787727b227f/raw/b9a8cac11b2f186130ba72379d52ba142ba4a2f7/google-maps-places-api-new.openapi.yaml))
 
 ### 3.1. Query Autocomplete
 
