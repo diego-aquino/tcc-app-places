@@ -31,16 +31,16 @@ export interface Restaurant {
 }
 
 const searchRestaurantsSchema = z.object({
-  query: z.string().min(1),
+  query: z.string(),
 });
 
 app.get('/places/restaurants', async (request, reply) => {
   const { query } = searchRestaurantsSchema.parse(request.query);
 
-  const fullQuery = `restaurantes em ${query}`;
+  const fullQuery = query ? `restaurantes em ${query}` : undefined;
 
   const places = await api.googleMaps.places.searchByText(fullQuery, {
-    type: 'restaurant',
+    type: query ? 'restaurant' : undefined,
   });
 
   const restaurants = places.map((place): Restaurant => {
@@ -73,7 +73,7 @@ export interface PlaceAutocompleteSuggestion {
 }
 
 const autocompleteSchema = z.object({
-  query: z.string().min(1),
+  query: z.string(),
 });
 
 /**
@@ -108,7 +108,9 @@ function formatAutocompleteText(
 app.get('/places/autocomplete', async (request, reply) => {
   const { query } = autocompleteSchema.parse(request.query);
 
-  const rawSuggestions = await api.googleMaps.places.autocomplete(query);
+  const rawSuggestions = await api.googleMaps.places.autocomplete(
+    query ? query : undefined,
+  );
 
   const suggestions = rawSuggestions.map(
     (suggestion): PlaceAutocompleteSuggestion => {

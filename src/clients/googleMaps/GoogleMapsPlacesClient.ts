@@ -76,7 +76,7 @@ class GoogleMapsPlacesClient {
     };
   }
 
-  async searchByText(query: string, options: { type: string }) {
+  async searchByText(query: string | undefined, options: { type?: string }) {
     const response = await this.api.places.get<PlaceTextSearchResult>(
       '/textsearch/json',
       {
@@ -97,7 +97,7 @@ class GoogleMapsPlacesClient {
     return places;
   }
 
-  async autocomplete(partialQuery: string) {
+  async autocomplete(partialQuery: string | undefined) {
     const response = await this.api.places.get<PlaceAutocompleteResult>(
       '/queryautocomplete/json',
       {
