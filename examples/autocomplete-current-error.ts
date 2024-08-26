@@ -3,7 +3,7 @@ import { runExample } from './utils';
 const baseURL = 'https://places-googleapis-proxy-xkh80emjtn.vercel.app/current';
 
 const searchParams = new URLSearchParams({
-  // input: 'pizza em l', // Empty input
+  input: '',
   language: 'pt-BR',
   radius: '10000',
 });

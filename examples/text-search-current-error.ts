@@ -3,8 +3,8 @@ import { runExample } from './utils';
 const baseURL = 'https://places-googleapis-proxy-xkh80emjtn.vercel.app/current';
 
 const searchParams = new URLSearchParams({
-  // query: 'restaurantes em Londres', // Empty query
-  // type: 'restaurant',
+  query: '',
+  type: '',
   language: 'pt-BR',
   radius: '10000',
 });

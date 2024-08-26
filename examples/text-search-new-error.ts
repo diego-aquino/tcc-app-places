@@ -10,7 +10,7 @@ const request = new Request(`${baseURL}/places:searchText`, {
       'places.id,places.displayName,places.formattedAddress,places.location,places.rating',
   },
   body: JSON.stringify({
-    // textQuery: 'restaurantes em Lisboa', // Empty textQuery
+    textQuery: '',
     includedType: 'restaurant',
     languageCode: 'pt-BR',
   }),

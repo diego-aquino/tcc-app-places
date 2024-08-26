@@ -8,7 +8,7 @@ const request = new Request(`${baseURL}/places:autocomplete`, {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    // input: 'pizza em l', // Empty input
+    input: '',
     includeQueryPredictions: true,
     languageCode: 'pt-BR',
   }),
