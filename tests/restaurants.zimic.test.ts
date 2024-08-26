@@ -37,30 +37,48 @@ describe('Restaurants', () => {
   const restaurantPlaces = {
     london: [
       {
-        place_id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
-        name: 'Brasserie Zédel',
-        rating: 4.5,
+        formatted_address: '20 Sherwood St, London W1F 7ED, Reino Unido',
         geometry: {
-          location: { lat: 51.5105561, lng: -0.1355974 },
+          location: {
+            lat: 51.5105561,
+            lng: -0.1355974,
+          },
           viewport: {
-            northeast: { lat: 51.51199682989272, lng: -0.1342086701072778 },
-            southwest: { lat: 51.50929717010727, lng: -0.1369083298927222 },
+            northeast: {
+              lat: 51.51199682989272,
+              lng: -0.1342086701072778,
+            },
+            southwest: {
+              lat: 51.50929717010727,
+              lng: -0.1369083298927222,
+            },
           },
         },
-        formatted_address: '20 Sherwood St, London W1F 7ED, Reino Unido',
+        name: 'Brasserie Zédel',
+        place_id: 'ChIJl-cjD9QEdkgRVkkQt3pySRI',
+        rating: 4.5,
       },
       {
-        place_id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
-        name: 'Sabor',
-        rating: 4.6,
+        formatted_address: '35-37 Heddon St, London W1B 4BR, Reino Unido',
         geometry: {
-          location: { lat: 51.5113964, lng: -0.1396951 },
+          location: {
+            lat: 51.5113964,
+            lng: -0.1396951,
+          },
           viewport: {
-            northeast: { lat: 51.51276382989273, lng: -0.1381331201072778 },
-            southwest: { lat: 51.51006417010728, lng: -0.1408327798927222 },
+            northeast: {
+              lat: 51.51276382989273,
+              lng: -0.1381331201072778,
+            },
+            southwest: {
+              lat: 51.51006417010728,
+              lng: -0.1408327798927222,
+            },
           },
         },
-        formatted_address: '35-37 Heddon St, London W1B 4BR, Reino Unido',
+        name: 'Sabor',
+        place_id: 'ChIJoXHzltUEdkgRc7QLGWRren0',
+        rating: 4.6,
       },
     ],
   } satisfies Record<string, Place[]>;
@@ -179,9 +197,11 @@ describe('Restaurants', () => {
       .respond({
         status: 200,
         body: {
-          status: 'UNKNOWN_ERROR',
+          error_message:
+            'See documentation for valid queries. https://developers.google.com/maps/documentation/places/web-service/search-text#TextSearchRequests',
           html_attributions: [],
           results: [],
+          status: 'INVALID_REQUEST',
         },
       });
 

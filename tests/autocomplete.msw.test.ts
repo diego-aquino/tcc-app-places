@@ -35,42 +35,43 @@ describe('Autocomplete', () => {
   const queryPredictions = {
     pizza: [
       {
-        description: 'pizza em Lisboa, Portugal',
+        description: 'pizza em Los Angeles, CA, EUA',
         matched_substrings: [
           { length: 5, offset: 0 },
-          { length: 3, offset: 9 },
+          { length: 1, offset: 9 },
         ],
         structured_formatting: {
           main_text: 'pizza',
           main_text_matched_substrings: [{ length: 5, offset: 0 }],
-          secondary_text: 'em Lisboa, Portugal',
-          secondary_text_matched_substrings: [{ length: 3, offset: 3 }],
+          secondary_text: 'em Los Angeles, CA, EUA',
+          secondary_text_matched_substrings: [{ length: 1, offset: 3 }],
         },
         terms: [
           { offset: 0, value: 'pizza' },
           { offset: 6, value: 'em' },
-          { offset: 9, value: 'Lisboa' },
-          { offset: 17, value: 'Portugal' },
+          { offset: 9, value: 'Los Angeles' },
+          { offset: 22, value: 'CA' },
+          { offset: 26, value: 'EUA' },
         ],
       },
       {
-        description: 'pizza em Lisle, Illinois, EUA',
+        description: 'pizza em Las Vegas, NV, EUA',
         matched_substrings: [
           { length: 5, offset: 0 },
-          { length: 3, offset: 9 },
+          { length: 1, offset: 9 },
         ],
         structured_formatting: {
           main_text: 'pizza',
           main_text_matched_substrings: [{ length: 5, offset: 0 }],
-          secondary_text: 'em Lisle, Illinois, EUA',
-          secondary_text_matched_substrings: [{ length: 3, offset: 3 }],
+          secondary_text: 'em Las Vegas, NV, EUA',
+          secondary_text_matched_substrings: [{ length: 1, offset: 3 }],
         },
         terms: [
           { offset: 0, value: 'pizza' },
           { offset: 6, value: 'em' },
-          { offset: 9, value: 'Lisle' },
-          { offset: 16, value: 'Illinois' },
-          { offset: 26, value: 'EUA' },
+          { offset: 9, value: 'Las Vegas' },
+          { offset: 20, value: 'NV' },
+          { offset: 24, value: 'EUA' },
         ],
       },
     ],
@@ -150,12 +151,12 @@ describe('Autocomplete', () => {
 
     expect(predictions).toEqual<PlaceAutocompleteSuggestion[]>([
       {
-        text: 'pizza em Lisboa, Portugal',
-        formattedText: '**pizza** em **Lis**boa, Portugal',
+        text: 'pizza em Los Angeles, CA, EUA',
+        formattedText: '**pizza** em **L**os Angeles, CA, EUA',
       },
       {
-        text: 'pizza em Lisle, Illinois, EUA',
-        formattedText: '**pizza** em **Lis**le, Illinois, EUA',
+        text: 'pizza em Las Vegas, NV, EUA',
+        formattedText: '**pizza** em **L**as Vegas, NV, EUA',
       },
     ]);
   });
@@ -165,10 +166,9 @@ describe('Autocomplete', () => {
       http.get(`${GOOGLE_MAPS_PLACES_API_URL}/queryautocomplete/json`, () => {
         return Response.json(
           {
-            status: 'UNKNOWN_ERROR',
-            html_attributions: [],
-            results: [],
-          },
+            predictions: [],
+            status: 'INVALID_REQUEST',
+          } satisfies PlaceAutocompleteResult,
           { status: 200 },
         );
       }),
