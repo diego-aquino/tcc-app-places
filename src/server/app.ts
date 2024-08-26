@@ -92,13 +92,14 @@ function formatAutocompleteText(
   const textAsArray = text.split('');
 
   for (const match of matches) {
-    const startIndex = match.offset;
-    const matchStartCharacter = textAsArray[startIndex];
-    textAsArray[startIndex] = `**${matchStartCharacter}`;
+    const startOffset = match.offset;
+    const endOffset = startOffset + match.length;
 
-    const endIndex = startIndex + match.length - 1;
-    const matchEndCharacter = textAsArray[endIndex];
-    textAsArray[endIndex] = `${matchEndCharacter}**`;
+    const startIndex = startOffset;
+    textAsArray[startIndex] = `**${textAsArray[startIndex]}`;
+
+    const endIndex = endOffset - 1;
+    textAsArray[endIndex] = `${textAsArray[endIndex]}**`;
   }
 
   return textAsArray.join('');
