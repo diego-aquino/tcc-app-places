@@ -3,7 +3,7 @@
 
 import type { HttpSchema, HttpSearchParamsSerialized } from 'zimic/http';
 
-export type GooglePlacesSchema = HttpSchema.Paths<{
+export type GooglePlacesSchema = HttpSchema<{
   '/details/json': {
     /** @description The Places API is a service that returns information about places using HTTP requests. Places are defined within this API as establishments, geographic locations, or prominent points of interest. */
     GET: GooglePlacesOperations['placeDetails'];
