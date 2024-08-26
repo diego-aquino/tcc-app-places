@@ -1,4 +1,5 @@
 import filesystem from 'fs';
+import util from 'util';
 
 async function logRequest(request: Request, baseURL: string) {
   console.log(`Requesting:\n\n${request.method} ${request.url}`);
@@ -46,28 +47,40 @@ async function logRequest(request: Request, baseURL: string) {
     content.body = await request.clone().json();
   }
 
-  console.log(content);
+  console.log(
+    util.formatWithOptions({ breakLength: 1, colors: true }, content),
+  );
 }
 
-export async function runExample(
-  request: Request,
-  baseURL: string,
-  outputFilePath: string,
-) {
+interface ExampleInput {
+  request: Request;
+  baseURL: string;
+  outputPath: string;
+}
+
+export async function runExample({
+  request,
+  baseURL,
+  outputPath,
+}: ExampleInput) {
   await logRequest(request, baseURL);
 
   const response = await fetch(request);
-
-  if (!response.ok || response.body === null) {
-    throw response;
-  }
-
   const responseBody = await response.json();
 
   await filesystem.promises.writeFile(
-    outputFilePath,
+    outputPath,
     JSON.stringify(responseBody, null, 2),
   );
 
-  console.log(`\nJSON response saved to ./${outputFilePath}`);
+  console.log('\nResponse:');
+  console.log(
+    util.formatWithOptions(
+      { breakLength: 1, colors: true },
+      {
+        status: response.status,
+        bodySavedTo: `./${outputPath}`,
+      },
+    ),
+  );
 }

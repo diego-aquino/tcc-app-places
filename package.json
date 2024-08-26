@@ -4,10 +4,7 @@
   "scripts": {
     "dev": "dotenv -c development -- tsx watch --clear-screen=false src/index.ts",
     "test": "dotenv -c test -- dotenv -c development -- vitest",
-    "example:search:current": "tsx examples/text-search-current.ts",
-    "example:search:new": "tsx examples/text-search-new.ts",
-    "example:autocomplete:current": "tsx examples/autocomplete-current.ts",
-    "example:autocomplete:new": "tsx examples/autocomplete-new.ts",
+    "example": "tsx examples/index.ts",
     "types:check": "tsc --noEmit"
   },
   "dependencies": {

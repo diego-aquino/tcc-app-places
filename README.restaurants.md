@@ -43,20 +43,31 @@ Ferramentas de mock:
 ### 3.1. Text Search
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/search-text)
+  - [Códigos de status](https://developers.google.com/maps/documentation/places/web-service/search-text#PlacesSearchStatus)
 
-Exemplo de requisição:
+Exemplos de requisição:
 
-```bash
-npm run example:current
-```
+- Sucesso
+  ```bash
+  npm run example current success
+  ```
+- Erro
+  ```bash
+  npm run example current error
+  ```
 
 ### 3.2. Text Search (New)
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/text-search)
 - [Guia de migração](https://developers.google.com/maps/documentation/places/web-service/migrate-text)
 
-Exemplo de requisição:
+Exemplos de requisição:
 
-```bash
-npm run example:new
-```
+- Sucesso
+  ```bash
+  npm run example new success
+  ```
+- Erro
+  ```bash
+  npm run example new error
+  ```

@@ -13,9 +13,13 @@ const request = new Request(`${baseURL}/textsearch/json?${searchParams}`, {
   method: 'GET',
 });
 
-const outputFilePath = 'example-text-search-current.json';
+const outputPath = 'example-current-success.json';
 
-runExample(request, baseURL, outputFilePath).catch((error) => {
+runExample({
+  request,
+  baseURL,
+  outputPath,
+}).catch((error) => {
   console.error(error);
   process.exit(1);
 });

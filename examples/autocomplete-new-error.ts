@@ -8,15 +8,19 @@ const request = new Request(`${baseURL}/places:autocomplete`, {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    input: 'pizza em l',
+    // input: 'pizza em l', // Empty input
     includeQueryPredictions: true,
     languageCode: 'pt-BR',
   }),
 });
 
-const outputFilePath = 'example-autocomplete-new.json';
+const outputPath = 'example-new-error.json';
 
-runExample(request, baseURL, outputFilePath).catch((error) => {
+runExample({
+  request,
+  baseURL,
+  outputPath,
+}).catch((error) => {
   console.error(error);
   process.exit(1);
 });

@@ -44,20 +44,31 @@ Ferramentas de mock:
 ### 3.1. Query Autocomplete
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/query)
+  - [Códigos de status](https://developers.google.com/maps/documentation/places/web-service/query#PlacesAutocompleteStatus)
 
-Exemplo de requisição:
+Exemplos de requisição:
 
-```bash
-npm run example:current
-```
+- Sucesso
+  ```bash
+  npm run example current success
+  ```
+- Erro
+  ```bash
+  npm run example current error
+  ```
 
 ### 3.2. Autocomplete (New)
 
 - [Documentação](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete)
 - [Guia de migração](https://developers.google.com/maps/documentation/places/web-service/migrate-autocomplete)
 
-Exemplo de requisição:
+Exemplos de requisição:
 
-```bash
-npm run example:new
-```
+- Sucesso
+  ```bash
+  npm run example new success
+  ```
+- Erro
+  ```bash
+  npm run example new error
+  ```

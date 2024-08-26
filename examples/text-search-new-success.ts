@@ -16,9 +16,13 @@ const request = new Request(`${baseURL}/places:searchText`, {
   }),
 });
 
-const outputFilePath = 'example-text-search-new.json';
+const outputPath = 'example-new-success.json';
 
-runExample(request, baseURL, outputFilePath).catch((error) => {
+runExample({
+  request,
+  baseURL,
+  outputPath,
+}).catch((error) => {
   console.error(error);
   process.exit(1);
 });
