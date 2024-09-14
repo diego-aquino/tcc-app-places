@@ -82,10 +82,10 @@ class GoogleMapsPlacesClient {
       '/textsearch/json',
       {
         params: {
-          query,
-          type: options.type,
-          language: 'pt-BR',
-          radius: 10000,
+          // query,
+          // type: options.type,
+          // language: 'pt-BR',
+          // radius: 10000,
         },
       },
     );
@@ -103,9 +103,9 @@ class GoogleMapsPlacesClient {
       '/queryautocomplete/json',
       {
         params: {
-          input: partialQuery,
-          language: 'pt-BR',
-          radius: 10000,
+          // input: partialQuery,
+          // language: 'pt-BR',
+          // radius: 10000,
         },
       },
     );
