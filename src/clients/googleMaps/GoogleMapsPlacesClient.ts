@@ -67,15 +67,16 @@ class GoogleMapsPlacesClient {
     const response = await this.api.places.post<PlaceTextSearchResult>(
       '/places:searchText' satisfies HttpSchemaPath<GooglePlacesSchema>,
       {
-        textQuery: query,
-        includedType: options.type,
-        languageCode: 'pt-BR',
-      } satisfies GooglePlacesOperations['Places_SearchText']['request']['body'],
+        //   textQuery: query,
+        //   includedType: options.type,
+        //   languageCode: 'pt-BR',
+        // } satisfies GooglePlacesOperations['Places_SearchText']['request']['body'],
+      },
       {
-        headers: {
-          'X-Goog-Fieldmask':
-            'places.id,places.displayName,places.formattedAddress,places.location,places.rating',
-        },
+        // headers: {
+        //   'X-Goog-Fieldmask':
+        //     'places.id,places.displayName,places.formattedAddress,places.location,places.rating',
+        // },
       },
     );
 
@@ -87,10 +88,11 @@ class GoogleMapsPlacesClient {
     const response = await this.api.places.post<PlaceAutocompleteResult>(
       '/places:autocomplete' satisfies HttpSchemaPath<GooglePlacesSchema>,
       {
-        input: partialQuery,
-        includeQueryPredictions: true,
-        languageCode: 'pt-BR',
-      } satisfies GooglePlacesOperations['Places_AutocompletePlaces']['request']['body'],
+        //   input: partialQuery,
+        //   includeQueryPredictions: true,
+        //   languageCode: 'pt-BR',
+        // } satisfies GooglePlacesOperations['Places_AutocompletePlaces']['request']['body'],
+      },
     );
 
     const { suggestions } = response.data;
