@@ -71,6 +71,12 @@ class GoogleMapsPlacesClient {
         includedType: options.type,
         languageCode: 'pt-BR',
       } satisfies GooglePlacesOperations['Places_SearchText']['request']['body'],
+      {
+        headers: {
+          'X-Goog-Fieldmask':
+            'places.id,places.displayName,places.formattedAddress,places.location,places.rating',
+        },
+      },
     );
 
     const { places } = response.data;
